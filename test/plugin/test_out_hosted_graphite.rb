@@ -21,39 +21,20 @@ class OutHostedGraphite < Test::Unit::TestCase
   end
 
   def test_configure
-    #### set configurations
-    # d = create_driver %[
-    #   path test_path
-    #   compress gz
-    # ]
-    #### check configurations
-    # assert_equal 'test_path', d.instance.path
-    # assert_equal :gz, d.instance.compress
+    d = create_driver(CONFIG)
+    assert_equal d.instance.api_key, 'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx'
+    assert_equal d.instance.metric_key, 'foo.bar'
+    assert_equal d.instance.protocol, 'http'
   end
 
-  def test_format
+  def test_post_metrics
+    metric_key = 'foo.bar'
+    record = {
+      'foo.bar' => '0.01'
+    }
     d = create_driver
-
-    # time = Time.parse("2011-01-02 13:14:15 UTC").to_i
-    # d.emit({"a"=>1}, time)
-    # d.emit({"a"=>2}, time)
-
-    # d.expect_format %[2011-01-02T13:14:15Z\ttest\t{"a":1}\n]
-    # d.expect_format %[2011-01-02T13:14:15Z\ttest\t{"a":2}\n]
-
-    # d.run
+    p = d.instance.post_metrics(metric_key, record)
+    assert_equal p, { 'foo.bar' => 0.01 }
   end
 
-  def test_write
-    d = create_driver
-
-    # time = Time.parse("2011-01-02 13:14:15 UTC").to_i
-    # d.emit({"a"=>1}, time)
-    # d.emit({"a"=>2}, time)
-
-    # ### FileOutput#write returns path
-    # path = d.run
-    # expect_path = "#{TMP_DIR}/out_file_test._0.log.gz"
-    # assert_equal expect_path, path
-  end
 end
