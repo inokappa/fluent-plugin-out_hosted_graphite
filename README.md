@@ -1,6 +1,6 @@
 # Fluent::Plugin::OutHostedGraphite
 
-TODO: Write a gem description
+fluentd plugin for [Hosted Graphite](https://www.hostedgraphite.com/).
 
 ## Installation
 
@@ -18,9 +18,32 @@ Or install it yourself as:
 
     $ gem install fluent-plugin-out_hosted_graphite
 
-## Usage
+## Configure
 
-TODO: Write usage instructions here
+### fluentd.conf
+
+```
+<match *.*>
+  type hosted_graphite
+  api_key xxxxxxxx-xxxx-xxxx-xxxxxxxxxxxxxxxxx
+  metric_key foo.bar
+  protocol udp
+</match>
+```
+
+### api_key
+
+ * required
+
+### metric_key
+
+ * required
+
+### protocol
+
+ * UDP
+ * TCP
+ * HTTP(Default)
 
 ## Contributing
 
