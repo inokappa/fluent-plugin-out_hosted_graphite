@@ -1,7 +1,7 @@
 # coding: utf-8
 lib = File.expand_path('../lib', __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
-require 'fluent/plugin/out_hosted_graphite/version'
+#require 'fluent/plugin/out_hosted_graphite/version'
 
 Gem::Specification.new do |spec|
   spec.name          = "fluent-plugin-out_hosted_graphite"

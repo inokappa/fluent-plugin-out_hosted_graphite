@@ -1,4 +1,3 @@
-require "fluent/plugin/out_hosted_graphite/version"
 require "hosted_graphite"
 
 module Fluent
@@ -9,6 +8,7 @@ module Fluent
 
     config_param :api_key, :string
     config_param :metric_key, :string, default: nil
+    config_param :protocol, :string, default: "http"
 
     # This method is called before starting.
     def configure(conf)
@@ -37,7 +37,7 @@ module Fluent
       chain.next
       es.each {|time,record|
         unless record.include?(@metric_key)
-          puts "metric_key does not exists."
+          log.warn "metric_key does not exists."
         else
           metric_key = @metric_key
           metric = record[@metric_key].to_f
@@ -49,10 +49,16 @@ module Fluent
 
     def post_metrics(metric_key, metric)
       HostedGraphite.api_key = @api_key
-      HostedGraphite.protocol = HostedGraphite::HTTP
+      case @protocol
+      when "http"
+        HostedGraphite.protocol = HostedGraphite::HTTP
+      when "tcp"
+        HostedGraphite.protocol = HostedGraphite::TCP
+      when "udp"
+        HostedGraphite.protocol = HostedGraphite::UDP
+      end
       result = HostedGraphite.send_metric(metric_key, metric)
-      puts "debug_out: #{@api_key} #{result} - #{metric_key} - #{metric}"
-      $stderr.puts "OK!"
+      #puts "debug_out: #{@api_key} #{@protocol} #{result} - #{metric_key} - #{metric}"
     end
 
   end
