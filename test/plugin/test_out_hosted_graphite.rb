@@ -8,6 +8,7 @@ class OutHostedGraphite < Test::Unit::TestCase
   CONFIG = %[
     api_key xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
     metric_key foo.bar
+    protocol http
   ]
   # CONFIG = %[
   #   path #{TMP_DIR}/out_file_test
