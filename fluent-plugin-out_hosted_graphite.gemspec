@@ -10,7 +10,7 @@ Gem::Specification.new do |spec|
   spec.email         = ["inokappa"]
   spec.summary       = %q{fluentd output plugin for post to Hosted Graphite}
   spec.description   = %q{fluentd output plugin for post to Hosted Graphite}
-  spec.homepage      = ""
+  spec.homepage      = "https://github.com/inokappa/fluent-plugin-out_hosted_graphite"
   spec.license       = "MIT"
 
   spec.files         = `git ls-files -z`.split("\x0")
@@ -20,6 +20,8 @@ Gem::Specification.new do |spec|
 
   spec.add_dependency "fluentd"
   spec.add_dependency "hosted_graphite"
+
+  spec.rubyforge_project = "fluent-plugin-out_hosted_graphite"
 
   spec.add_development_dependency "bundler", "~> 1.7"
   spec.add_development_dependency "rake", "~> 10.0"
