@@ -23,19 +23,27 @@ module Fluent
       # ...
     end
 
-    def emit(tag, es, chain)
-      chain.next
-      es.each {|time,record|
-        unless record.include?(@metric_key)
-          log.warn "metric_key does not exists."
-        else
-          metric_key = @metric_key
-          metric = record[@metric_key].to_f
-          post_metrics(metric_key, metric)
-        end
-      }
+    def configure(conf)
+      super
+
+      if @metric_key
+        @metric_key = @metric_key.split(',')
+      end
     end
 
+    def emit(tag, es, chain)
+      chain.next
+      es.each do |time,record|
+        @metric_key.each do |metric_key|
+          record.select do |k,v|
+            if metric_key.include?(k)
+              metric = record[k].to_f
+              post_metrics(k, metric)
+            end
+          end
+        end
+      end
+    end
 
     def post_metrics(metric_key, metric)
       HostedGraphite.api_key = @api_key
@@ -49,7 +57,7 @@ module Fluent
       end
       HostedGraphite.send_metric(metric_key, metric)
       #result = HostedGraphite.send_metric(metric_key, metric)
-      #puts "debug_out: #{@api_key} #{@protocol} #{result} - #{metric_key} - #{metric}"
+      #puts "debug_out: #{@api_key} #{@protocol} - #{metric_key} - #{metric}\n"
     end
 
   end
