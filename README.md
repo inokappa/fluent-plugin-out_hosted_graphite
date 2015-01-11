@@ -26,18 +26,19 @@ Or install it yourself as:
 <match *.*>
   type hosted_graphite
   api_key xxxxxxxx-xxxx-xxxx-xxxxxxxxxxxxxxxxx
-  metric_key foo.bar
+  metric_key foo.bar,hoge,fuga,bar
   protocol udp
 </match>
 ```
 
 ### api_key
 
- * required
+ * Required
 
 ### metric_key
 
- * required
+ * Required
+ * Supported multiple keys
 
 ### protocol
 
